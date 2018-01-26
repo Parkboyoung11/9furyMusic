@@ -10,7 +10,7 @@ import UIKit
 
 class MenuBar: UIView, UICollectionViewDataSource, UICollectionViewDelegate,  UICollectionViewDelegateFlowLayout {
     let cellID = "cellID"
-    let imageNames = ["home", "trending", "subscriptions", "account"]
+    let imageNames = ["home", "myMusicss", "subscriptions", "account"]
     var horizontalLeftBarContraint : NSLayoutConstraint?
     var homeController: HomeController?
     

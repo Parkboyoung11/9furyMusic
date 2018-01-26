@@ -16,6 +16,7 @@
 		3313A2402019C8AF00703B06 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A23F2019C8AF00703B06 /* Extension.swift */; };
 		3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2412019CF9A00703B06 /* MusicCell.swift */; };
 		3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2432019E5FF00703B06 /* HomeCell.swift */; };
+		3314EEEA201B0BC7004444AB /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3314EEE9201B0BC7004444AB /* Music.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		3313A23F2019C8AF00703B06 /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		3313A2412019CF9A00703B06 /* MusicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicCell.swift; sourceTree = "<group>"; };
 		3313A2432019E5FF00703B06 /* HomeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
+		3314EEE9201B0BC7004444AB /* Music.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		3313A2252019C4F500703B06 /* 9furyMusic */ = {
 			isa = PBXGroup;
 			children = (
+				3314EEE8201B0BB7004444AB /* Model */,
 				3313A23B2019C7A300703B06 /* View */,
 				3313A2382019C64600703B06 /* Controller */,
 				3313A23E2019C89F00703B06 /* Helper */,
@@ -98,6 +101,14 @@
 				3313A23F2019C8AF00703B06 /* Extension.swift */,
 			);
 			name = Helper;
+			sourceTree = "<group>";
+		};
+		3314EEE8201B0BB7004444AB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3314EEE9201B0BC7004444AB /* Music.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +188,7 @@
 				3313A23A2019C67A00703B06 /* HomeController.swift in Sources */,
 				3313A2272019C4F500703B06 /* AppDelegate.swift in Sources */,
 				3313A23D2019C7B700703B06 /* MenuBar.swift in Sources */,
+				3314EEEA201B0BC7004444AB /* Music.swift in Sources */,
 				3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */,
 				3313A2402019C8AF00703B06 /* Extension.swift in Sources */,
 			);
@@ -342,6 +354,7 @@
 				3313A2372019C4F500703B06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
