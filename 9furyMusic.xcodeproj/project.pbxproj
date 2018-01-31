@@ -17,6 +17,9 @@
 		3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2412019CF9A00703B06 /* MusicCell.swift */; };
 		3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2432019E5FF00703B06 /* HomeCell.swift */; };
 		3314EEEA201B0BC7004444AB /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3314EEE9201B0BC7004444AB /* Music.swift */; };
+		33E2FFB120219CFB00127882 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E2FFB020219CFB00127882 /* ApiService.swift */; };
+		33E2FFB92021BC5300127882 /* MusicLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E2FFB82021BC5300127882 /* MusicLauncher.swift */; };
+		33E2FFBB2021C8EE00127882 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E2FFBA2021C8EE00127882 /* test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		3313A2412019CF9A00703B06 /* MusicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicCell.swift; sourceTree = "<group>"; };
 		3313A2432019E5FF00703B06 /* HomeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		3314EEE9201B0BC7004444AB /* Music.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		33E2FFB020219CFB00127882 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
+		33E2FFB82021BC5300127882 /* MusicLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLauncher.swift; sourceTree = "<group>"; };
+		33E2FFBA2021C8EE00127882 /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,7 @@
 		3313A2252019C4F500703B06 /* 9furyMusic */ = {
 			isa = PBXGroup;
 			children = (
+				33E2FFAF20219CD600127882 /* ApiService */,
 				3314EEE8201B0BB7004444AB /* Model */,
 				3313A23B2019C7A300703B06 /* View */,
 				3313A2382019C64600703B06 /* Controller */,
@@ -99,6 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				3313A23F2019C8AF00703B06 /* Extension.swift */,
+				33E2FFB82021BC5300127882 /* MusicLauncher.swift */,
+				33E2FFBA2021C8EE00127882 /* test.swift */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -109,6 +118,14 @@
 				3314EEE9201B0BC7004444AB /* Music.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		33E2FFAF20219CD600127882 /* ApiService */ = {
+			isa = PBXGroup;
+			children = (
+				33E2FFB020219CFB00127882 /* ApiService.swift */,
+			);
+			name = ApiService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,9 +204,12 @@
 				3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */,
 				3313A23A2019C67A00703B06 /* HomeController.swift in Sources */,
 				3313A2272019C4F500703B06 /* AppDelegate.swift in Sources */,
+				33E2FFBB2021C8EE00127882 /* test.swift in Sources */,
+				33E2FFB92021BC5300127882 /* MusicLauncher.swift in Sources */,
 				3313A23D2019C7B700703B06 /* MenuBar.swift in Sources */,
 				3314EEEA201B0BC7004444AB /* Music.swift in Sources */,
 				3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */,
+				33E2FFB120219CFB00127882 /* ApiService.swift in Sources */,
 				3313A2402019C8AF00703B06 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

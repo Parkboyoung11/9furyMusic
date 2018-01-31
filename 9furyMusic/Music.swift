@@ -9,12 +9,14 @@
 import UIKit
 
 class Music: NSObject {
-    var avatarImageURL : String?
-    var title : String?
+    var rank : String?
+    var avatar : String?
+    var link : String?
+    var name : String?
     var artist : String?
-    var numberView : String?
+    var view : String?
     var quality : String?
-    var rating : String?
+    var cover : String?
     
     init(dictionary : [String: String]) {
         super.init()

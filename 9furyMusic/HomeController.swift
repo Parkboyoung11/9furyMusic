@@ -106,6 +106,9 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 //        }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
+        
+//        let homeCell = HomeCell()
+//        HomeCell.navigationController = navigationController
         return cell
     }
     
@@ -123,5 +126,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: UICollectionViewScrollPosition())
         setTitleForIndex(Int(index))
     }
+    
 }
 

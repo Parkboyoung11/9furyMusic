@@ -27,11 +27,12 @@ class BaseCell: UICollectionViewCell {
 class MusicCell: BaseCell {
     var music : Music? {
         didSet {
-            titleLabel.text = music?.title
-            ratingLabel.text = music?.rating
+            titleLabel.text = music?.name
+            ratingLabel.text = music?.rank
             artistLabel.text = music?.artist
-            viewLabel.text = music?.numberView
+            viewLabel.text = music?.view
             qualityLabel.text = music?.quality
+            setAvatarImage()
         }
     }
     
@@ -55,11 +56,12 @@ class MusicCell: BaseCell {
     
     var titleLabelHeightContraint : NSLayoutConstraint?
     
-//    func setAvatarImage() {
-//        if let profileImageURL = music?.avatarImageURL {
-//            avatarImageView.loadImageFromURL(urlString: profileImageURL)
-//        }
-//    }
+    func setAvatarImage() {
+        if let profileImageURL = music?.avatar {
+            let profileImageURLDecode = profileImageURL.replacingOccurrences(of: "\\", with: "")
+            avatarImageView.loadImageFromURL(urlString: profileImageURLDecode)
+        }
+    }
     
     override func setupViews() {
         titleLabel.myLabel(textColor: #colorLiteral(red: 0.1725987196, green: 0.4564271569, blue: 0.548560977, alpha: 1), textAlignment: NSTextAlignment.left, font: UIFont.boldSystemFont(ofSize: 17))
@@ -83,7 +85,7 @@ class MusicCell: BaseCell {
         addSubview(separatorVerticalView)
         addSubview(separatorVerticalViewBonus)
         
-        avatarImageView.image = #imageLiteral(resourceName: "icon")
+//        avatarImageView.image = #imageLiteral(resourceName: "icon")
 //        ratingLabel.text = "1"
 //        titleLabel.text = "I Lay My Love On You"
 //        artistLabel.text = "Westlife"
