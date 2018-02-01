@@ -83,8 +83,8 @@ class HomeCell: BaseCell, UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let data = musics?[indexPath.item]
         let musicLauncher = MusicLauncher()
-        musicLauncher.music = data
-        musicLauncher.showMusicPlayer()
+//        musicLauncher.music = data
+        musicLauncher.showMusicPlayer(music : data!)
     }
     
 }
