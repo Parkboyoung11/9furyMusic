@@ -9,20 +9,24 @@
 import UIKit
 import AVFoundation
 
+var musicForPlayer : Music?
+var player : AVAudioPlayer!
+
 class MusicView: UIView {
     var music : Music? {
         didSet {
             nameLabel.text = music?.name
             artistLabel.text = music?.artist
             setCoverImage()
+            setToDefault()
             MusicController(link: (music?.link)!)
         }
     }
     
-    var player : AVAudioPlayer!
     var isPlaying = false
     var lockShowPauseButton = true
-    var timer : Timer!
+    var timerRotation : Timer!
+    var timerUpdate : Timer!
     var angle : Float = 0
     
     let controlsContainerView : UIView = {
@@ -115,14 +119,9 @@ class MusicView: UIView {
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.maximumTrackTintColor = UIColor.white
         slider.minimumTrackTintColor = UIColor.orange
-        slider.setThumbImage(#imageLiteral(resourceName: "thumbs"), for: UIControlState.normal)
-//        slider.setMinimumTrackImage(#imageLiteral(resourceName: "thumbs"), for: UIControlState.normal)
-//        slider.setMaximumTrackImage(#imageLiteral(resourceName: "thumbs"), for: UIControlState.normal)
-//        slider.minimumValue = 0.05
-//        slider.maximumValue = 0.95
+        slider.setThumbImage(#imageLiteral(resourceName: "thumbRemake"), for: UIControlState.normal)
         
-//        slider.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
-        
+        slider.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
         slider.isUserInteractionEnabled = false
         return slider
     }()
@@ -135,115 +134,13 @@ class MusicView: UIView {
         return imageView
     }()
     
-    func MusicController(link : String) {
-        if let url = URL(string: link) {
-            let queue = DispatchQueue(label: "queueLoadData")
-            queue.async {
-                do{
-                    let data = try Data(contentsOf: url)
-                    DispatchQueue.main.async {
-                        do {
-                            self.player = try AVAudioPlayer(data: data)
-                            self.player.play()
-                            self.player.numberOfLoops = -1
-                            self.isPlaying = true
-                            self.coverRotation()
-                            self.updateMusic()
-                        }catch {}
-                    }
-                }catch {}
-            }
-        }
-    }
-    
-    func updateMusic() {
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (time) in
-            UIView.animate(withDuration: 0.5, animations: {
-                self.musicSlider.setValue(Float(self.player.currentTime / self.player.duration), animated: false)
-                let duration = self.convertSecToMin(secs: Int(self.player.duration))
-                let current = self.convertSecToMin(secs: Int(self.player.currentTime))
-                self.musicLengthLabel.text = duration
-                self.currentTimeLabel.text = current
-            })
-        }
-    }
-    
-    func convertSecToMin(secs: Int) -> String {
-        let min = Int(secs / 60)
-        let sec = Int(secs % 60)
-        let minStr : String = String(format: "%02d:%02d", min, sec)
-        return minStr
-    }
-    
-    func coverRotation(){
-        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { (timer) in
-            self.angle += 0.5
-            self.coverImage.transform = CGAffineTransform(rotationAngle: CGFloat(self.angle) * CGFloat(Double.pi) / 180)
-        }
-    }
-    
-    func handlePause() {
-        if isPlaying == true {
-            pausePlayButton.setImage(#imageLiteral(resourceName: "play"), for: UIControlState.normal)
-            player?.pause()
-            if (timer) != nil {
-                timer.invalidate()
-                timer = nil
-            }
-            isPlaying = false
-        }else {
-            if (player != nil) {
-                pausePlayButton.setImage(#imageLiteral(resourceName: "pause"), for: UIControlState.normal)
-                player?.play()
-                coverRotation()
-                isPlaying = true
-            }
-        }
-    }
-    
-    func handleBack(){
-        
-    }
-    
-    func handleNext(){
-        print("Next")
-    }
-    
-    func handlePrevious(){
-        print("Previous")
-    }
-    
-//    func handleSliderChange() {
-//        let duration = player.duration
-//        let value = Float64(musicSlider.value) * duration
-//        player.pause()
-//        player.play(atTime: value)
-//    }
-    
-    func setCoverImage() {
-        if let coverImageURL = music?.cover {
-            let coverImageURLDecode = coverImageURL.replacingOccurrences(of: "\\", with: "")
-            coverImage.loadImageFromURL(urlString: coverImageURLDecode)
-        }
-    }
-    
-    
-    
-    fileprivate func setupGradientLayer() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = bounds
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-        gradientLayer.locations = [0.7, 1.2]
-        controlsContainerView.layer.addSublayer(gradientLayer)
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradientLayer()
         
+        controlsContainerView.tag = 109
         self.addSubview(controlsContainerView)
         controlsContainerView.frame = frame
-//        controlsContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleBack)))
         
         controlsContainerView.addSubview(backButton)
         controlsContainerView.addSubview(nextButton)
@@ -255,6 +152,9 @@ class MusicView: UIView {
         controlsContainerView.addSubview(musicLengthLabel)
         controlsContainerView.addSubview(musicSlider)
         controlsContainerView.addSubview(pausePlayButton)
+        
+        //Add TapGesture for UISlider
+        musicSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sliderTapped(gestureRecognizer:))))
         
         // horizontal
         controlsContainerView.addContraintsWithFormat(format: "H:|-10-[v0(20)]-20-[v1]-10-|", views: backButton, nameLabel)
@@ -279,22 +179,172 @@ class MusicView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
+    func setCoverImage() {
+        if let coverImageURL = music?.cover {
+            let coverImageURLDecode = coverImageURL.replacingOccurrences(of: "\\", with: "")
+            coverImage.loadImageFromURL(urlString: coverImageURLDecode)
+        }
+    }
+    
+    fileprivate func setupGradientLayer() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientLayer.locations = [0.7, 1.2]
+        controlsContainerView.layer.addSublayer(gradientLayer)
+    }
+    
+    func MusicController(link : String) {
+        if let url = URL(string: link) {
+            let queue = DispatchQueue(label: "queueLoadData")
+            queue.async {
+                do{
+                    let data = try Data(contentsOf: url)
+                    DispatchQueue.main.async {
+                        do {
+                            if player == nil {
+                                player = try AVAudioPlayer(data: data)
+                                player.play()
+                                player.numberOfLoops = -1
+                                self.isPlaying = true
+                                self.musicSlider.isUserInteractionEnabled = true
+                                self.coverRotation()
+                                self.updateMusic()
+                            }
+                        }catch {print("Data is not Audio!")}
+                    }
+                }catch {print("Cant Load Data from Server!")}
+            }
+        }
+    }
+    
+    func setToDefault(){
+        isPlaying = false
+        if timerUpdate != nil {
+            timerUpdate.invalidate()
+            timerUpdate = nil
+        }
+        
+        if (timerRotation) != nil {
+            timerRotation.invalidate()
+            timerRotation = nil
+        }
+        
+        coverImage.transform = CGAffineTransform(rotationAngle: 0)
+        musicSlider.setValue(0, animated: false)
+        musicSlider.isUserInteractionEnabled = false
+        currentTimeLabel.text = "00:00"
+        musicLengthLabel.text = "00:00"
+    }
+    
+    func updateMusic() {
+        timerUpdate = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { (time) in
+            UIView.animate(withDuration: 0.5, animations: {
+                self.musicSlider.setValue(Float(player.currentTime / player.duration), animated: false)
+                let duration = self.convertSecToMin(secs: Int(player.duration))
+                let current = self.convertSecToMin(secs: Int(player.currentTime))
+                self.musicLengthLabel.text = duration
+                self.currentTimeLabel.text = current
+            })
+        }
+    }
+    
+    func convertSecToMin(secs: Int) -> String {
+        let min = Int(secs / 60)
+        let sec = Int(secs % 60)
+        let minStr : String = String(format: "%02d:%02d", min, sec)
+        return minStr
+    }
+    
+    func coverRotation(){
+        timerRotation = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { (timer) in
+            self.angle += 0.5
+            self.coverImage.transform = CGAffineTransform(rotationAngle: CGFloat(self.angle) * CGFloat(Double.pi) / 180)
+        }
+    }
+    
+    func handlePause() {
+        if isPlaying == true {
+            pausePlayButton.setImage(#imageLiteral(resourceName: "play"), for: UIControlState.normal)
+            player?.pause()
+            if (timerRotation) != nil {
+                timerRotation.invalidate()
+                timerRotation = nil
+            }
+            isPlaying = false
+        }else {
+            if (player != nil) {
+                pausePlayButton.setImage(#imageLiteral(resourceName: "pause"), for: UIControlState.normal)
+                player?.play()
+                coverRotation()
+                isPlaying = true
+            }
+        }
+    }
+    
+    func handleBack(){
+        if let keyWindow = UIApplication.shared.keyWindow {
+            let viewSuper = self.superview
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                viewSuper?.frame = CGRect(x: 0, y: keyWindow.frame.height - 0, width: keyWindow.frame.width, height: 0)
+            }, completion: { (completedAnimation) in
+                self.controlsContainerView.isHidden = true
+                self.isHidden = true
+                viewSuper?.isHidden = true
+            })
+        }else {
+            controlsContainerView.isHidden = true
+            self.isHidden = true
+            self.superview?.isHidden = true
+        }
+        
+        
+    }
+    
+    func handleNext(){
+        print("Next Function. Coming Soon")
+    }
+    
+    func handlePrevious(){
+        print("Previous Function. Coming Soon")
+    }
+    
+    func handleSliderChange() {
+        let duration = player.duration
+        let currentTime = musicSlider.value * Float(duration)
+        player.stop()
+        player.currentTime = TimeInterval(currentTime)
+        player.prepareToPlay()
+        player.play()
+    }
 
-let viewUnderPlayer : UIView = {
-    let viewss = UIView()
-    return viewss
-}()
+    func sliderTapped(gestureRecognizer: UIGestureRecognizer) {
+        let pointTapped: CGPoint = gestureRecognizer.location(in: self.controlsContainerView)
+        let positionSlider: CGPoint = musicSlider.frame.origin
+        let widthSlider: CGFloat = musicSlider.frame.size.width
+        
+        let newValue = ((pointTapped.x - positionSlider.x) * CGFloat(musicSlider.maximumValue) / widthSlider)
+        musicSlider.setValue(Float(newValue), animated: true)
+        handleSliderChange()
+    }
+ 
+}
 
 class MusicLauncher: NSObject {
     func showMusicPlayer(music : Music) {
         if let keyWindow = UIApplication.shared.keyWindow {
+            musicForPlayer = music
             let view = UIView()
             view.frame = CGRect(x: 0, y: keyWindow.frame.height - 10, width: keyWindow.frame.width, height: 10)
+            view.backgroundColor = UIColor.clear
             
             let musicView = MusicView(frame: keyWindow.frame)
             musicView.music = music
+            musicView.tag = 110
+            
             view.addSubview(musicView)
+            view.tag = 111
+            musicView.backgroundColor = UIColor.clear
             
             keyWindow.addSubview(view)
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions.curveEaseOut, animations: {
