@@ -17,6 +17,9 @@
 		3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2412019CF9A00703B06 /* MusicCell.swift */; };
 		3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2432019E5FF00703B06 /* HomeCell.swift */; };
 		3314EEEA201B0BC7004444AB /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3314EEE9201B0BC7004444AB /* Music.swift */; };
+		33635746202ADC4500AA08C3 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635745202ADC4500AA08C3 /* SearchController.swift */; };
+		33635748202AEEDA00AA08C3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635747202AEEDA00AA08C3 /* BaseCell.swift */; };
+		3363574A202AEEEF00AA08C3 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635749202AEEEF00AA08C3 /* SearchCell.swift */; };
 		33E2FFB120219CFB00127882 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E2FFB020219CFB00127882 /* ApiService.swift */; };
 		33E2FFB92021BC5300127882 /* MusicLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E2FFB82021BC5300127882 /* MusicLauncher.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +37,9 @@
 		3313A2412019CF9A00703B06 /* MusicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicCell.swift; sourceTree = "<group>"; };
 		3313A2432019E5FF00703B06 /* HomeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		3314EEE9201B0BC7004444AB /* Music.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		33635745202ADC4500AA08C3 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		33635747202AEEDA00AA08C3 /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		33635749202AEEEF00AA08C3 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		33E2FFB020219CFB00127882 /* ApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		33E2FFB82021BC5300127882 /* MusicLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicLauncher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				3313A2392019C67A00703B06 /* HomeController.swift */,
+				33635745202ADC4500AA08C3 /* SearchController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -96,6 +103,8 @@
 				3313A23C2019C7B700703B06 /* MenuBar.swift */,
 				3313A2412019CF9A00703B06 /* MusicCell.swift */,
 				3313A2432019E5FF00703B06 /* HomeCell.swift */,
+				33635747202AEEDA00AA08C3 /* BaseCell.swift */,
+				33635749202AEEEF00AA08C3 /* SearchCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -199,11 +208,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */,
+				3363574A202AEEEF00AA08C3 /* SearchCell.swift in Sources */,
+				33635746202ADC4500AA08C3 /* SearchController.swift in Sources */,
 				3313A23A2019C67A00703B06 /* HomeController.swift in Sources */,
 				3313A2272019C4F500703B06 /* AppDelegate.swift in Sources */,
 				33E2FFB92021BC5300127882 /* MusicLauncher.swift in Sources */,
 				3313A23D2019C7B700703B06 /* MenuBar.swift in Sources */,
 				3314EEEA201B0BC7004444AB /* Music.swift in Sources */,
+				33635748202AEEDA00AA08C3 /* BaseCell.swift in Sources */,
 				3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */,
 				33E2FFB120219CFB00127882 /* ApiService.swift in Sources */,
 				3313A2402019C8AF00703B06 /* Extension.swift in Sources */,

@@ -231,6 +231,7 @@ class MusicView: UIView {
         }
         
         coverImage.transform = CGAffineTransform(rotationAngle: 0)
+        angle = 0
         musicSlider.setValue(0, animated: false)
         musicSlider.isUserInteractionEnabled = false
         currentTimeLabel.text = "00:00"

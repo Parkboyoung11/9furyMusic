@@ -55,7 +55,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     func handleSearch() {
-        // do nothing...
+        let layoutSearch = UICollectionViewFlowLayout()
+        navigationController?.pushViewController(SearchController(collectionViewLayout: layoutSearch), animated: true)
     }
     
     func handleMore() {

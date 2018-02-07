@@ -1,19 +1,31 @@
 //
-//  MusicCell.swift
+//  SearchCell.swift
 //  9furyMusic
 //
-//  Created by VuHongSon on 1/25/18.
+//  Created by VuHongSon on 2/7/18.
 //  Copyright © 2018 VuHongSon. All rights reserved.
 //
 
 import UIKit
-class MusicCell: BaseCell {
+
+class SearchCell: BaseCell {
     var music : Music? {
         didSet {
             titleLabel.text = music?.name
-            ratingLabel.text = music?.rank
             artistLabel.text = music?.artist
             viewLabel.text = music?.view
+            if music?.quality == "Lossless" {
+                qualityLabel.textColor = UIColor.red
+            }
+            if music?.quality == "320kbps" {
+                qualityLabel.textColor = UIColor.blue
+            }
+            if music?.quality == "128kbps" {
+                qualityLabel.textColor = #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1)
+            }
+            if music?.quality == "64kbps" {
+                qualityLabel.textColor = UIColor.black
+            }
             qualityLabel.text = music?.quality
             setAvatarImage()
         }
@@ -40,7 +52,7 @@ class MusicCell: BaseCell {
     var titleLabelHeightContraint : NSLayoutConstraint?
     
     func setAvatarImage() {
-        if let profileImageURL = music?.avatar {
+        if let profileImageURL = music?.cover {
             let profileImageURLDecode = profileImageURL.replacingOccurrences(of: "\\", with: "")
             avatarImageView.loadImageFromURL(urlString: profileImageURLDecode)
         }
@@ -82,17 +94,6 @@ class MusicCell: BaseCell {
         addContraintsWithFormat(format: "H:|-5-[v0(18)]-5-[v1(1)]-5-[v2(44)]-15-[v3(201)]-5-[v4(1)]-5-[v5]-10-|", views: ratingLabel, separatorVerticalViewBonus, avatarImageView, titleLabel, separatorVerticalView, viewLabel)
         addContraintsWithFormat(format: "H:|-93-[v0(201)]-11-[v1]-10-|", views: artistLabel, qualityLabel)
         addContraintsWithFormat(format: "H:|-2-[v0]-2-|", views: separatorHorizontalView)
-
+        
     }
 }
-
-
-
-
-
-
-
-
-
-
-

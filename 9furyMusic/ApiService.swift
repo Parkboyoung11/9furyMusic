@@ -17,6 +17,11 @@ class ApiService: NSObject {
         fetchFeedForUrlString("\(baseUrl)/home.php", completion)
     }
     
+    func fetchSearch(keyWord: String, _ completion: @escaping ([Music]) -> ()) {
+        fetchFeedForUrlString("\(baseUrl)/search.php?s=\(keyWord)", completion)
+//        fetchFeedForUrlString("\(baseUrl)/search.php?s=my love", completion)
+    }
+    
 //    func fetchTrendingFeed(_ completion: @escaping ([Video]) -> ()) {
 //        fetchFeedForUrlString("\(baseUrl)/trending.json", completion)
 //    }

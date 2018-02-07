@@ -17,6 +17,9 @@ class Music: NSObject {
     var view : String?
     var quality : String?
     var cover : String?
+    var duration : String?
+    var genre : String?
+    var album : String?
     
     init(dictionary : [String: String]) {
         super.init()
