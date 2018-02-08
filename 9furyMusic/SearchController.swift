@@ -17,11 +17,13 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
     let searchBar : UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.keyboardType = UIKeyboardType.default
-        
+        searchBar.autocapitalizationType = UITextAutocapitalizationType.none
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.placeholder = "Find Music"
         return searchBar
     }()
+    
+    let searchTutorial = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +33,11 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         tabBarController?.tabBar.isHidden = true
 //        self.automaticallyAdjustsScrollViewInsets = false
+        
+        
+        
+        setupSearchTutorial()
+        setupRightNavigationButton()
         setupSearchBar()
         setupCollectionView()
         
@@ -78,20 +85,6 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
         }
     }
     
-    func showMusicPlayer() {
-        if let keyWindow = UIApplication.shared.keyWindow {
-            let viewSuper = keyWindow.viewWithTag(111)
-            viewSuper?.frame = CGRect(x: 0, y: keyWindow.frame.height - 10, width: keyWindow.frame.width, height: 10)
-            viewSuper?.isHidden = false
-            viewSuper?.viewWithTag(110)?.isHidden = false
-            viewSuper?.viewWithTag(110)?.viewWithTag(109)?.isHidden = false
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions.curveEaseOut, animations: {
-                viewSuper?.frame = keyWindow.frame
-            }, completion: { (completedAnimation) in})
-            
-        }
-    }
-    
     func updateMusicPlayer() {
         if let keyWindow = UIApplication.shared.keyWindow {
             let viewSuper2 = keyWindow.viewWithTag(111)?.viewWithTag(110) as! MusicView
@@ -103,13 +96,44 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
     
     
     func fetchMusic(keyWord: String) {
+        let backgroundLoadingView = UIView()
+        let activityIndicator = UIActivityIndicatorView()
+        if let keyWindow = UIApplication.shared.keyWindow {
+            backgroundLoadingView.frame = keyWindow.frame
+            backgroundLoadingView.backgroundColor = UIColor(white: 0, alpha: 0.4)
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.white
+            activityIndicator.center = self.view.center
+            activityIndicator.hidesWhenStopped = true
+        
+            keyWindow.addSubview(backgroundLoadingView)
+            backgroundLoadingView.tag = 199
+            backgroundLoadingView.addSubview(activityIndicator)
+            activityIndicator.startAnimating()
+        }
+        
         ApiService.sharedInstance.fetchSearch(keyWord: keyWord, { (musics) in
             self.musics = musics
+            if let keyWindow = UIApplication.shared.keyWindow {
+                if let viewWithTag = keyWindow.viewWithTag(199) {
+                    activityIndicator.stopAnimating()
+                    viewWithTag.removeFromSuperview()
+                }
+            }
             self.collectionView?.reloadData()
         })
     }
     
     
+    func setupRightNavigationButton(){
+        let playingButtonItem = UIBarButtonItem(image: UIImage(named: "playing")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handlePlaying))
+        navigationItem.rightBarButtonItems = [playingButtonItem]
+    }
+    
+    func handlePlaying() {
+        if musicForPlayer != nil {
+            showMusicPlayer()
+        }
+    }
     
     func setupCollectionView() {
         if let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -132,6 +156,22 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
         
     }
     
+    func setupSearchTutorial() {
+        let tutorialString = "type Song Name, Artist in search bar to\nfind your music =))))\n@9fury"
+        let tutorialMutableString = NSMutableAttributedString(string: tutorialString, attributes: [NSFontAttributeName:UIFont.boldSystemFont(ofSize: 18)])
+        tutorialMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blue, range: NSRange(location:5,length:17))
+        tutorialMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.orange, range: NSRange(location:26,length:10))
+        tutorialMutableString.addAttribute(NSForegroundColorAttributeName, value: UIColor.red, range: NSRange(location:62,length:6))
+        searchTutorial.textAlignment = .center
+        searchTutorial.attributedText = tutorialMutableString
+        searchTutorial.numberOfLines = 0
+        searchTutorial.sizeToFit()
+        searchTutorial.isHidden = false
+        view.addSubview(searchTutorial)
+        view.addContraintsWithFormat(format: "V:|-70-[v0]", views: searchTutorial)
+        view.addContraintsWithFormat(format: "H:|[v0]|", views: searchTutorial)
+    }
+    
     func hideKeyboardss() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardss))
         tap.cancelsTouchesInView = false
@@ -152,6 +192,7 @@ extension SearchController : UISearchBarDelegate {
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         if searchBar.text != nil {
+            searchTutorial.isHidden = true
             let keyWord = searchBar.text?.replacingOccurrences(of: " ", with: "+")
             fetchMusic(keyWord: keyWord!)
             collectionView?.reloadData()

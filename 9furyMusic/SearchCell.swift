@@ -39,6 +39,8 @@ class SearchCell: BaseCell {
         return imageView
     }()
     
+    
+    
     let titleLabel = UILabel()
     let artistLabel = UILabel()
     let viewLabel = UILabel()
@@ -64,6 +66,7 @@ class SearchCell: BaseCell {
         viewLabel.myLabel(textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: NSTextAlignment.right, font: UIFont.systemFont(ofSize: 12))
         qualityLabel.myLabel(textColor: UIColor.red, textAlignment: NSTextAlignment.right, font: UIFont.systemFont(ofSize: 12))
         ratingLabel.myLabel(textColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), textAlignment: NSTextAlignment.center, font: UIFont.boldSystemFont(ofSize: 14))
+        
         
         
         separatorHorizontalView.separatorView()

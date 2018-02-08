@@ -11,6 +11,7 @@ import UIKit
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellID = "cellID"
+    let accountCellID = "accountID"
     let titles = ["Home", "My Music", "Ahihi", "Account"]
     
     lazy var menuBar : MenuBar = {
@@ -40,8 +41,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         collectionView?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         collectionView?.register(HomeCell.self, forCellWithReuseIdentifier: cellID)
-//        collectionView?.register(TrendingCell.self, forCellWithReuseIdentifier: trendingCellId)
-//        collectionView?.register(SubscriptionCell.self, forCellWithReuseIdentifier: subscriptionCellId)
+        collectionView?.register(AccountCell.self, forCellWithReuseIdentifier: accountCellID)
         
         collectionView?.contentInset = UIEdgeInsetsMake(50, 0, 0, 0)
         collectionView?.scrollIndicatorInsets = UIEdgeInsetsMake(50, 0, 0, 0)
@@ -50,8 +50,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func setupNaBarButtons() {
         let searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search_icon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
-        let moreButtonItem = UIBarButtonItem(image: UIImage(named: "nav_more_icon")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleMore))
-        navigationItem.rightBarButtonItems = [moreButtonItem, searchBarButtonItem]
+        let playingButtonItem = UIBarButtonItem(image: UIImage(named: "playing")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handlePlaying))
+        navigationItem.rightBarButtonItems = [playingButtonItem, searchBarButtonItem]
     }
     
     func handleSearch() {
@@ -59,8 +59,10 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         navigationController?.pushViewController(SearchController(collectionViewLayout: layoutSearch), animated: true)
     }
     
-    func handleMore() {
-//        settingLancher.showSetting()
+    func handlePlaying() {
+        if musicForPlayer != nil {
+            showMusicPlayer()
+        }
     }
     
     private func setupMenuBar() {
@@ -98,13 +100,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var identifier = String()
-//        if indexPath.item == 1 {
-//            identifier = trendingCellId
-//        } else if indexPath.item == 2 {
-//            identifier = subscriptionCellId
-//        } else {
+        if indexPath.item == 0 {
             identifier = cellID
-//        }
+        } else {
+            identifier = accountCellID
+        }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
@@ -129,4 +129,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
 }
+
+
 

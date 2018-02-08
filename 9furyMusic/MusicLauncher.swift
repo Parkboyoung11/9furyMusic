@@ -75,6 +75,37 @@ class MusicView: UIView {
         return button
     }()
     
+    let repeatButton : UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.setImage(#imageLiteral(resourceName: "repeat"), for: UIControlState.normal)
+        button.addTarget(self, action: #selector(handleRepeat), for: UIControlEvents.touchUpInside)
+        button.tintColor = UIColor.white
+        button.isHidden = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
+    let shuffleButton : UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.setImage(#imageLiteral(resourceName: "shuffle"), for: UIControlState.normal)
+        button.addTarget(self, action: #selector(handleShuffle), for: UIControlEvents.touchUpInside)
+        button.tintColor = UIColor.white
+        button.isHidden = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    
+    let downloadButton : UIButton = {
+        let button = UIButton(type: UIButtonType.system)
+        button.setImage(#imageLiteral(resourceName: "download"), for: UIControlState.normal)
+        button.addTarget(self, action: #selector(handleDownload), for: UIControlEvents.touchUpInside)
+        button.tintColor = UIColor.white
+        button.isHidden = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
     let musicLengthLabel : UILabel = {
         let label = UILabel()
@@ -152,6 +183,9 @@ class MusicView: UIView {
         controlsContainerView.addSubview(musicLengthLabel)
         controlsContainerView.addSubview(musicSlider)
         controlsContainerView.addSubview(pausePlayButton)
+        controlsContainerView.addSubview(repeatButton)
+        controlsContainerView.addSubview(shuffleButton)
+        controlsContainerView.addSubview(downloadButton)
         
         //Add TapGesture for UISlider
         musicSlider.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(sliderTapped(gestureRecognizer:))))
@@ -164,6 +198,11 @@ class MusicView: UIView {
         controlsContainerView.addContraintsWithFormat(format: "H:[v0(40)]-50-[v1(40)]-50-[v2(40)]", views: previousButton, pausePlayButton, nextButton)
         pausePlayButton.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
         
+        controlsContainerView.addContraintsWithFormat(format: "H:[v0(30)]-60-[v1]-60-[v2(30)]", views: shuffleButton, downloadButton, repeatButton)
+        downloadButton.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
+        downloadButton.widthAnchor.constraint(equalTo: downloadButton.heightAnchor).isActive = true
+        
+        
         // vertical
         controlsContainerView.addContraintsWithFormat(format: "V:|-30-[v0(20)]-50-[v1]", views: backButton, coverImage)
         coverImage.heightAnchor.constraint(equalTo: coverImage.widthAnchor).isActive = true
@@ -173,6 +212,9 @@ class MusicView: UIView {
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(16)]-90-|", views: musicLengthLabel)
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(40)]-30-|", views: previousButton)
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(40)]-30-|", views: nextButton)
+        controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: repeatButton)
+        controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: shuffleButton)
+        controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: downloadButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -305,9 +347,17 @@ class MusicView: UIView {
     func handleNext(){
         print("Next Function. Coming Soon")
     }
-    
     func handlePrevious(){
         print("Previous Function. Coming Soon")
+    }
+    func handleRepeat() {
+        // do something
+    }
+    func handleShuffle() {
+        // do something
+    }
+    func handleDownload() {
+        // do something
     }
     
     func handleSliderChange() {

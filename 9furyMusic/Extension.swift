@@ -77,6 +77,31 @@ extension UILabel {
     }
 }
 
+extension UICollectionViewController {
+    func showMusicPlayer() {
+        if let keyWindow = UIApplication.shared.keyWindow {
+            let viewSuper = keyWindow.viewWithTag(111)
+            viewSuper?.frame = CGRect(x: 0, y: keyWindow.frame.height - 10, width: keyWindow.frame.width, height: 10)
+            viewSuper?.isHidden = false
+            viewSuper?.viewWithTag(110)?.isHidden = false
+            viewSuper?.viewWithTag(110)?.viewWithTag(109)?.isHidden = false
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIViewAnimationOptions.curveEaseOut, animations: {
+                viewSuper?.frame = keyWindow.frame
+            }, completion: { (completedAnimation) in})
+            
+        }
+    }
+}
+
+extension UIImageView {
+    func myImageSkin() {
+        self.layer.borderWidth = 2
+        self.layer.borderColor = UIColor.brown.cgColor
+        self.layer.cornerRadius = 20
+        self.clipsToBounds = true
+    }
+}
+
 
 
 

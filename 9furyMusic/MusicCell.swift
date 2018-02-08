@@ -14,6 +14,18 @@ class MusicCell: BaseCell {
             ratingLabel.text = music?.rank
             artistLabel.text = music?.artist
             viewLabel.text = music?.view
+            if music?.quality == "Lossless" {
+                qualityLabel.textColor = UIColor.red
+            }
+            if music?.quality == "320kbps" {
+                qualityLabel.textColor = UIColor.blue
+            }
+            if music?.quality == "128kbps" {
+                qualityLabel.textColor = #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1)
+            }
+            if music?.quality == "64kbps" {
+                qualityLabel.textColor = UIColor.black
+            }
             qualityLabel.text = music?.quality
             setAvatarImage()
         }

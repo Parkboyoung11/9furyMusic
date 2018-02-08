@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3305AF9A202C24AB00574D05 /* home.php in Resources */ = {isa = PBXBuildFile; fileRef = 3305AF98202C24AB00574D05 /* home.php */; };
+		3305AF9B202C24AB00574D05 /* search.php in Resources */ = {isa = PBXBuildFile; fileRef = 3305AF99202C24AB00574D05 /* search.php */; };
 		3313A2272019C4F500703B06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2262019C4F500703B06 /* AppDelegate.swift */; };
 		3313A22C2019C4F500703B06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3313A22A2019C4F500703B06 /* Main.storyboard */; };
 		3313A22E2019C4F500703B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3313A22D2019C4F500703B06 /* Assets.xcassets */; };
@@ -17,6 +19,7 @@
 		3313A2422019CF9A00703B06 /* MusicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2412019CF9A00703B06 /* MusicCell.swift */; };
 		3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3313A2432019E5FF00703B06 /* HomeCell.swift */; };
 		3314EEEA201B0BC7004444AB /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3314EEE9201B0BC7004444AB /* Music.swift */; };
+		335AE532202C5117003834F6 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335AE531202C5117003834F6 /* AccountCell.swift */; };
 		33635746202ADC4500AA08C3 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635745202ADC4500AA08C3 /* SearchController.swift */; };
 		33635748202AEEDA00AA08C3 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635747202AEEDA00AA08C3 /* BaseCell.swift */; };
 		3363574A202AEEEF00AA08C3 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33635749202AEEEF00AA08C3 /* SearchCell.swift */; };
@@ -25,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3305AF98202C24AB00574D05 /* home.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; name = home.php; path = ../../../../../Users/sonvuhong9fury/Documents/Etc/home.php; sourceTree = "<group>"; };
+		3305AF99202C24AB00574D05 /* search.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; name = search.php; path = ../../../../../Users/sonvuhong9fury/Documents/Etc/search.php; sourceTree = "<group>"; };
 		3313A2232019C4F500703B06 /* 9furyMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 9furyMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3313A2262019C4F500703B06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3313A22B2019C4F500703B06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -37,6 +42,7 @@
 		3313A2412019CF9A00703B06 /* MusicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicCell.swift; sourceTree = "<group>"; };
 		3313A2432019E5FF00703B06 /* HomeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		3314EEE9201B0BC7004444AB /* Music.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		335AE531202C5117003834F6 /* AccountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
 		33635745202ADC4500AA08C3 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		33635747202AEEDA00AA08C3 /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		33635749202AEEEF00AA08C3 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
@@ -55,6 +61,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3305AF97202C243600574D05 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				3305AF98202C24AB00574D05 /* home.php */,
+				3305AF99202C24AB00574D05 /* search.php */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
 		3313A21A2019C4F500703B06 = {
 			isa = PBXGroup;
 			children = (
@@ -74,6 +89,7 @@
 		3313A2252019C4F500703B06 /* 9furyMusic */ = {
 			isa = PBXGroup;
 			children = (
+				3305AF97202C243600574D05 /* API */,
 				33E2FFAF20219CD600127882 /* ApiService */,
 				3314EEE8201B0BB7004444AB /* Model */,
 				3313A23B2019C7A300703B06 /* View */,
@@ -105,6 +121,7 @@
 				3313A2432019E5FF00703B06 /* HomeCell.swift */,
 				33635747202AEEDA00AA08C3 /* BaseCell.swift */,
 				33635749202AEEEF00AA08C3 /* SearchCell.swift */,
+				335AE531202C5117003834F6 /* AccountCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -194,9 +211,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3305AF9B202C24AB00574D05 /* search.php in Resources */,
 				3313A2312019C4F500703B06 /* LaunchScreen.storyboard in Resources */,
 				3313A22E2019C4F500703B06 /* Assets.xcassets in Resources */,
 				3313A22C2019C4F500703B06 /* Main.storyboard in Resources */,
+				3305AF9A202C24AB00574D05 /* home.php in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +236,7 @@
 				3314EEEA201B0BC7004444AB /* Music.swift in Sources */,
 				33635748202AEEDA00AA08C3 /* BaseCell.swift in Sources */,
 				3313A2442019E5FF00703B06 /* HomeCell.swift in Sources */,
+				335AE532202C5117003834F6 /* AccountCell.swift in Sources */,
 				33E2FFB120219CFB00127882 /* ApiService.swift in Sources */,
 				3313A2402019C8AF00703B06 /* Extension.swift in Sources */,
 			);
