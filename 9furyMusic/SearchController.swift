@@ -42,6 +42,7 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
         setupCollectionView()
         
         
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -153,7 +154,7 @@ class SearchController: UICollectionViewController, UICollectionViewDelegateFlow
         view.addContraintsWithFormat(format: "V:|[v0(44)]", views: searchBar)
         view.addContraintsWithFormat(format: "H:|[v0]|", views: searchBar)
         searchBar.delegate = self
-        
+        searchBar.becomeFirstResponder()
     }
     
     func setupSearchTutorial() {

@@ -11,8 +11,10 @@ import AVFoundation
 
 var musicForPlayer : Music?
 var player : AVAudioPlayer!
+var repeatMode : Int = 1      //0: no repeat, 1 : one song, 2: all
 
-class MusicView: UIView {
+
+class MusicView: UIView, AVAudioPlayerDelegate {
     var music : Music? {
         didSet {
             nameLabel.text = music?.name
@@ -24,6 +26,7 @@ class MusicView: UIView {
     }
     
     var isPlaying = false
+    
     var lockShowPauseButton = true
     var timerRotation : Timer!
     var timerUpdate : Timer!
@@ -35,128 +38,6 @@ class MusicView: UIView {
         return view
     }()
     
-    let pausePlayButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "pause"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handlePause), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let nextButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "next3"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handleNext), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let previousButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "previous3"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handlePrevious), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let backButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "back2"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handleBack), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let repeatButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "repeat"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handleRepeat), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    
-    let shuffleButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "shuffle"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handleShuffle), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    
-    let downloadButton : UIButton = {
-        let button = UIButton(type: UIButtonType.system)
-        button.setImage(#imageLiteral(resourceName: "download"), for: UIControlState.normal)
-        button.addTarget(self, action: #selector(handleDownload), for: UIControlEvents.touchUpInside)
-        button.tintColor = UIColor.white
-        button.isHidden = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    let musicLengthLabel : UILabel = {
-        let label = UILabel()
-        label.text = "00:00"
-        label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .right
-        return label
-    }()
-    
-    let currentTimeLabel : UILabel = {
-        let label = UILabel()
-        label.text = "00:00"
-        label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .left
-        return label
-    }()
-    
-    let nameLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Song Name"
-        label.textColor = UIColor.white
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let artistLabel : UILabel = {
-        let label = UILabel()
-        label.text = "Artist"
-        label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let musicSlider : UISlider = {
-        let slider = UISlider()
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        slider.maximumTrackTintColor = UIColor.white
-        slider.minimumTrackTintColor = UIColor.orange
-        slider.setThumbImage(#imageLiteral(resourceName: "thumbRemake"), for: UIControlState.normal)
-        
-        slider.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
-        slider.isUserInteractionEnabled = false
-        return slider
-    }()
-    
     let coverImage : CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
@@ -165,9 +46,27 @@ class MusicView: UIView {
         return imageView
     }()
     
+    let musicLengthLabel = UILabel()
+    let currentTimeLabel = UILabel()
+    let nameLabel = UILabel()
+    let artistLabel = UILabel()
+    
+    let pausePlayButton = UIButton(type: UIButtonType.system)
+    let nextButton = UIButton(type: UIButtonType.system)
+    let previousButton = UIButton(type: UIButtonType.system)
+    let backButton = UIButton(type: UIButtonType.system)
+    let repeatButton = UIButton(type: UIButtonType.system)
+    let shuffleButton = UIButton(type: UIButtonType.system)
+    let downloadButton = UIButton(type: UIButtonType.system)
+    
+    
+    let musicSlider = UISlider()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGradientLayer()
+        setupPlayerView()
+        
         
         controlsContainerView.tag = 109
         self.addSubview(controlsContainerView)
@@ -197,10 +96,8 @@ class MusicView: UIView {
         controlsContainerView.addContraintsWithFormat(format: "H:|-5-[v0(40)]-5-[v1]-5-[v2(40)]-5-|", views: currentTimeLabel, musicSlider, musicLengthLabel)
         controlsContainerView.addContraintsWithFormat(format: "H:[v0(40)]-50-[v1(40)]-50-[v2(40)]", views: previousButton, pausePlayButton, nextButton)
         pausePlayButton.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
-        
-        controlsContainerView.addContraintsWithFormat(format: "H:[v0(30)]-60-[v1]-60-[v2(30)]", views: shuffleButton, downloadButton, repeatButton)
+        controlsContainerView.addContraintsWithFormat(format: "H:[v0(30)]-60-[v1(20)]-60-[v2(28)]", views: shuffleButton, downloadButton, repeatButton)
         downloadButton.centerXAnchor.constraint(equalTo: controlsContainerView.centerXAnchor).isActive = true
-        downloadButton.widthAnchor.constraint(equalTo: downloadButton.heightAnchor).isActive = true
         
         
         // vertical
@@ -214,11 +111,48 @@ class MusicView: UIView {
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(40)]-30-|", views: nextButton)
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: repeatButton)
         controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: shuffleButton)
-        controlsContainerView.addContraintsWithFormat(format: "V:[v0(20)]-130-|", views: downloadButton)
+        controlsContainerView.addContraintsWithFormat(format: "V:[v0(19)]-131-|", views: downloadButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag == true {
+            handlePause()
+        }
+    }
+    
+    func playMusicBackground() {
+        do {
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
+//            print("Playback OK")
+//            try AVAudioSession.sharedInstance().setActive(true)
+//            print("Session is Active")
+        } catch {
+            print(error)
+        }
+    }
+    
+    func setupPlayerView() {
+        musicLengthLabel.customLabelWithText(textColor: UIColor.white, textAlignment: NSTextAlignment.right, font: UIFont.boldSystemFont(ofSize: 12), text: "00:00")
+        currentTimeLabel.customLabelWithText(textColor: UIColor.white, textAlignment: NSTextAlignment.left, font: UIFont.boldSystemFont(ofSize: 12), text: "00:00")
+        nameLabel.customLabelWithText(textColor: UIColor.white, textAlignment: NSTextAlignment.left, font: UIFont.boldSystemFont(ofSize: 14), text: "Song Name")
+        artistLabel.customLabelWithText(textColor: UIColor.white, textAlignment: NSTextAlignment.left, font: UIFont.systemFont(ofSize: 14), text: "Artist")
+        pausePlayButton.customButton(image: #imageLiteral(resourceName: "pause"), target: self, selector: #selector(handlePause), tintColor: UIColor.white, isHidden: false)
+        nextButton.customButton(image: #imageLiteral(resourceName: "next3"), target: self, selector: #selector(handleNext), tintColor: UIColor.white, isHidden: false)
+        previousButton.customButton(image: #imageLiteral(resourceName: "previous3"), target: self, selector: #selector(handlePrevious), tintColor: UIColor.white, isHidden: false)
+        
+        
+        repeatButton.customButton(image: #imageLiteral(resourceName: "repeat"), target: self, selector: #selector(handleRepeat), tintColor: UIColor.white, isHidden: false)
+        handleRepeatImage()
+        shuffleButton.customButton(image: #imageLiteral(resourceName: "shuffle"), target: self, selector: #selector(handleShuffle), tintColor: UIColor.white, isHidden: false)
+        downloadButton.customButton(image: #imageLiteral(resourceName: "download"), target: self, selector: #selector(handleDownload), tintColor: UIColor.white, isHidden: false)
+        backButton.customButton(image: #imageLiteral(resourceName: "back2"), target: self, selector: #selector(handleBack), tintColor: UIColor.white, isHidden: false)
+        musicSlider.customSlider(thumbImage: #imageLiteral(resourceName: "thumbRemake"), target: self, selector: #selector(handleSliderChange))
     }
     
     func setCoverImage() {
@@ -246,8 +180,11 @@ class MusicView: UIView {
                         do {
                             if player == nil {
                                 player = try AVAudioPlayer(data: data)
+                                player.prepareToPlay()
+                                self.playMusicBackground()
                                 player.play()
-                                player.numberOfLoops = -1
+                                player.delegate = self
+                                self.handleRepeatLoop()
                                 self.isPlaying = true
                                 self.musicSlider.isUserInteractionEnabled = true
                                 self.coverRotation()
@@ -260,6 +197,8 @@ class MusicView: UIView {
         }
     }
     
+    
+    
     func setToDefault(){
         isPlaying = false
         if timerUpdate != nil {
@@ -271,7 +210,7 @@ class MusicView: UIView {
             timerRotation.invalidate()
             timerRotation = nil
         }
-        
+        pausePlayButton.setImage(#imageLiteral(resourceName: "pause"), for: UIControlState.normal)
         coverImage.transform = CGAffineTransform(rotationAngle: 0)
         angle = 0
         musicSlider.setValue(0, animated: false)
@@ -345,19 +284,57 @@ class MusicView: UIView {
     }
     
     func handleNext(){
-        print("Next Function. Coming Soon")
+//        print("Next Function. Coming Soon")
     }
     func handlePrevious(){
-        print("Previous Function. Coming Soon")
+//        print("Previous Function. Coming Soon")
     }
     func handleRepeat() {
-        // do something
+        if player != nil {
+            handleRepeatValue()
+            handleRepeatLoop()
+            handleRepeatImage()
+        }
+        
     }
     func handleShuffle() {
-        // do something
+//        print("Shuffle Function. Coming Soon")
     }
     func handleDownload() {
-        // do something
+//        print("Download Function. Coming Soon")
+    }
+    
+    func handleRepeatValue() {
+        if repeatMode == 0 {
+            repeatMode = 2
+        }else if repeatMode == 1 {
+            repeatMode = 0
+        }else if repeatMode == 2 {
+            repeatMode = 1
+        }
+    }
+    
+    func handleRepeatLoop() {
+        if repeatMode == 0 {
+            player.numberOfLoops = 0
+        }else if repeatMode == 1 {
+            player.numberOfLoops = -1
+        }else {
+            player.numberOfLoops = 0
+        }
+    }
+    
+    func handleRepeatImage() {
+        if repeatMode == 0 {
+            repeatButton.setImage(#imageLiteral(resourceName: "repeat"), for: UIControlState.normal)
+            repeatButton.tintColor = UIColor(white: 0.5, alpha: 0.5)
+        }else if repeatMode == 1 {
+            repeatButton.setImage(#imageLiteral(resourceName: "repeat_one"), for: UIControlState.normal)
+            repeatButton.tintColor = UIColor.white
+        }else {
+            repeatButton.setImage(#imageLiteral(resourceName: "repeat"), for: UIControlState.normal)
+            repeatButton.tintColor = UIColor.white
+        }
     }
     
     func handleSliderChange() {

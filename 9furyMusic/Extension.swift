@@ -75,6 +75,13 @@ extension UILabel {
         self.textAlignment = textAlignment
         self.font = font
     }
+    
+    func customLabelWithText(textColor: UIColor, textAlignment: NSTextAlignment, font: UIFont, text: String) {
+        myLabel(textColor: textColor, textAlignment: textAlignment, font: font)
+        self.text = text
+    }
+    
+    
 }
 
 extension UICollectionViewController {
@@ -102,6 +109,26 @@ extension UIImageView {
     }
 }
 
+extension UIButton {
+    func customButton(image: UIImage, target: Any? , selector: Selector, tintColor: UIColor, isHidden: Bool) {
+        self.setImage(image, for: UIControlState.normal)
+        self.addTarget(target, action: selector, for: UIControlEvents.touchUpInside)
+        self.tintColor = tintColor
+        self.isHidden = false
+        self.translatesAutoresizingMaskIntoConstraints = false
+    }
+}
+
+extension UISlider {
+    func customSlider(thumbImage: UIImage, target: Any?, selector: Selector) {
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.maximumTrackTintColor = UIColor.white
+        self.minimumTrackTintColor = UIColor.orange
+        self.setThumbImage(thumbImage, for: UIControlState.normal)
+        self.addTarget(target, action: selector, for: UIControlEvents.valueChanged)
+        self.isUserInteractionEnabled = false
+    }
+}
 
 
 
